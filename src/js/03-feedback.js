@@ -10,7 +10,7 @@ const refs = {
 refs.form.addEventListener('submit', onFormSubmit);
 refs.form.addEventListener('input', throttle(storageformData, 500));
 
-let formData = JSON.parse(localStorage.getItem(STORAGE_KEY) || {});
+let formData = JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
 populateTextarea();
 
 function onFormSubmit(e){
