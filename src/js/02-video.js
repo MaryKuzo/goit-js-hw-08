@@ -11,19 +11,14 @@ const player = new Player(handstick, {
   id: 'vimeo-player',
 
 });
-player.getCurrentTime().then(function (currentTime) {
-  const seconds = currentTime;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(seconds));
-});
 
-player.on('timeupdate', throttle(function () {
-  player.getCurrentTime().then(function (currentTime) {
-    const seconds = currentTime;
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(seconds));
+player.on('timeupdate', throttle(function ({seconds}) {
 
-  }, 1000)
-}));
-player.setCurrentTime(JSON.parse(localStorage.getItem(STORAGE_KEY)) || 0);
+    localStorage.setItem(STORAGE_KEY, seconds);
+
+  }, 1000
+));
+player.setCurrentTime(localStorage.getItem(STORAGE_KEY) || 0);
 
 // Ініціалізуй плеєр у файлі скрипта як це описано в секції pre-existing player, але враховуй, що у тебе плеєр доданий як npm пакет, а не через CDN.
 // Вивчи документацію методу on() і почни відстежувати подію timeupdate - оновлення часу відтворення.

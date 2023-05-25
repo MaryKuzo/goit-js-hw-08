@@ -8,14 +8,16 @@ const refs = {
 };
 
 refs.form.addEventListener('submit', onFormSubmit);
-refs.textarea.addEventListener('input', throttle(storageformData, 500));
-refs.email.addEventListener('input', throttle(storageformData, 500));
-let formData = {};
+refs.form.addEventListener('input', throttle(storageformData, 500));
+
+let formData = JSON.parse(localStorage.getItem(STORAGE_KEY) || {});
 populateTextarea();
 
 function onFormSubmit(e){
   e.preventDefault();
-
+  if (refs.email.value === '' || refs.textarea.value === '' ) {
+    return alert('Please fill in all the fields!')
+ }
   console.log(formData);
   e.target.reset();
   localStorage.removeItem(STORAGE_KEY);
@@ -27,13 +29,14 @@ function storageformData(e){
   localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
 
+
 function populateTextarea() {
   const storedData = localStorage.getItem(STORAGE_KEY);
   if (storedData) {
     formData = JSON.parse(storedData)
     let { email, message } = refs.form.elements;
-    email.value = formData.email + "";
-    message.value = formData.message + "";
+    email.value = formData.email || "";
+    message.value = formData.message || "";
   }
 
 }
